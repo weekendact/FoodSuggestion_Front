@@ -1,0 +1,4 @@
+#Tue Nov 14 15:39:54 KST 2023
+base.0=/Users/joseonghyeon/Desktop/Object_Project/Object_back/Object_Food_Suggestion_Project_Front/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

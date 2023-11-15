@@ -68,6 +68,19 @@ class _MyCategorySelectionPageState extends State<MyCategorySelectionPage> {
                 });
               },
             ),
+            CheckboxListTile(
+              title: Text('컵밥'),
+              value: selectedCategories.contains('컵밥'),
+              onChanged: (newValue) {
+                setState(() {
+                  if (newValue == true) {
+                    selectedCategories.add('컵밥');
+                  } else {
+                    selectedCategories.remove('컵밥');
+                  }
+                });
+              },
+            ),
             ElevatedButton(
               onPressed: (){},
               child: Text('이전 페이지로'),

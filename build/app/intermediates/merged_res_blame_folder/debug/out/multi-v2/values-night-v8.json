@@ -1,17 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.object_food_suggestion_project.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.object_food_suggestion_project.app-mergeDebugResources-5:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/joseonghyeon/Desktop/Object_Project/Object_back/Object_Food_Suggestion_Project_Front/android/app/src/main/res/values-night/styles.xml",
+                    "source": "C:\\Object\\Object_Front\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "172,817",
+                        "startOffsets": "175,831",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "475,981"
+                        "endOffsets": "482,997"
                     },
                     "to": {
                         "startLines": "2,6",

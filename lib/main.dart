@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:object_food_suggestion_project/Sign_Up_Page.dart';
 import 'package:object_food_suggestion_project/home.dart'; // http 패키지 import
 
 void main() {
@@ -16,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,20 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Text('로그인'),
             ),
+            SizedBox(height: 10),
+
+        ElevatedButton(
+          onPressed: () {
+            // 회원가입 버튼 클릭 시 회원가입 화면으로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignUpPage()),
+            );
+          },
+          child: Text('회원가입'),
+        ),
+
+
           ],
         ),
       ),

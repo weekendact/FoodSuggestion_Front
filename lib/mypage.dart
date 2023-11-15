@@ -85,10 +85,10 @@ class MyInfoPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListTile(
-              title: Text("ID\n\n${userData.name_user}"),
+              title: Text("아이디\n\n${userData.name_user}"),
             ),
             ListTile(
-              title: Text("pw  ${userData.maskedPassword}"),
+              title: Text("비밀번호  ${userData.maskedPassword}"),
             ),
             Divider(),
             Row(

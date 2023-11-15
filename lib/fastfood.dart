@@ -83,10 +83,6 @@ class _MyCategorySelectionPageState extends State<MyCategorySelectionPage> {
             ),
             ElevatedButton(
               onPressed: (){},
-              child: Text('이전 페이지로'),
-            ),
-            ElevatedButton(
-              onPressed: (){},
               child: Text('다음 페이지로'),
             ),
           ],

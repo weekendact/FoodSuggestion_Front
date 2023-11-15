@@ -85,19 +85,6 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
               },
             ),
             CheckboxListTile(
-              title: Text('양식'),
-              value: selectedCategories.contains('양식'),
-              onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    selectedCategories.add('양식');
-                  } else {
-                    selectedCategories.remove('양식');
-                  }
-                });
-              },
-            ),
-            CheckboxListTile(
               title: Text('일식'),
               value: selectedCategories.contains('일식'),
               onChanged: (newValue) {

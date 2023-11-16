@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -8,12 +9,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FoodInfoPage(),
+      home: FoodInfoPage(selectedCategories, url);
     );
   }
 }
 
 class FoodInfoPage extends StatefulWidget {
+  final List<String> selectedCategories;
+  final String url;
+
+  FoodInfoPage(this.selectedCategories, this.url);
+
   @override
   _FoodInfoPageState createState() => _FoodInfoPageState();
 }

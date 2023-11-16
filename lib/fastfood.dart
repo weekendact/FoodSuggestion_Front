@@ -1,5 +1,6 @@
-// main.dart 패스트푸드
 import 'package:flutter/material.dart';
+
+import 'food_info.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
 
 class MyCategorySelectionPage extends StatefulWidget {
   @override
-  _MyCategorySelectionPageState createState() => _MyCategorySelectionPageState();
+  _MyCategorySelectionPageState createState() =>
+      _MyCategorySelectionPageState();
 }
 
 class _MyCategorySelectionPageState extends State<MyCategorySelectionPage> {
@@ -33,56 +35,41 @@ class _MyCategorySelectionPageState extends State<MyCategorySelectionPage> {
               title: Text('치킨'),
               value: selectedCategories.contains('치킨'),
               onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    selectedCategories.add('치킨');
-                  } else {
-                    selectedCategories.remove('치킨');
-                  }
-                });
+                updateSelectedCategories('치킨', newValue!);
               },
             ),
             CheckboxListTile(
               title: Text('피자'),
               value: selectedCategories.contains('피자'),
               onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    selectedCategories.add('피자');
-                  } else {
-                    selectedCategories.remove('피자');
-                  }
-                });
+                updateSelectedCategories('피자', newValue!);
               },
             ),
             CheckboxListTile(
-              title: Text('버거/샌드위치'),
-              value: selectedCategories.contains('버거/샌드위치'),
+              title: Text('햄버거'),
+              value: selectedCategories.contains('햄버거'),
               onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    selectedCategories.add('버거/샌드위치');
-                  } else {
-                    selectedCategories.remove('버거/샌드위치');
-                  }
-                });
+                updateSelectedCategories('햄버거', newValue!);
+              },
+            ),
+            CheckboxListTile(
+              title: Text('샌드위치'),
+              value: selectedCategories.contains('샌드위치'),
+              onChanged: (newValue) {
+                updateSelectedCategories('샌드위치', newValue!);
               },
             ),
             CheckboxListTile(
               title: Text('컵밥'),
               value: selectedCategories.contains('컵밥'),
               onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    selectedCategories.add('컵밥');
-                  } else {
-                    selectedCategories.remove('컵밥');
-                  }
-                });
+                updateSelectedCategories('컵밥', newValue!);
               },
             ),
             ElevatedButton(
-              onPressed: (){},
+              onPressed: () {
+                navigateToNextPage();
+              },
               child: Text('다음 페이지로'),
             ),
           ],
@@ -90,4 +77,36 @@ class _MyCategorySelectionPageState extends State<MyCategorySelectionPage> {
       ),
     );
   }
+
+  void updateSelectedCategories(String category, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        selectedCategories.add(category);
+      } else {
+        selectedCategories.remove(category);
+      }
+    });
+  }
+
+  void navigateToNextPage() async {
+    // Build your URL with selected categories
+    String url = 'http://192.168.56.1:8080/stores/getStoreInfoByCategories?';
+    for (String category in selectedCategories) {
+      url += 'foodindetail=$category&';
+    }
+
+    // Remove the trailing '&' if there are selected categories
+    if (selectedCategories.isNotEmpty) {
+      url = url.substring(0, url.length - 1);
+    }
+
+    // Navigate to the next page with selected categories
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodInfoPage(selectedCategories, url),
+      ),
+    );
+  }
+
 }

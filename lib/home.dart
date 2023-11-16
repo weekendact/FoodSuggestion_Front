@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:object_food_suggestion_project/setting.dart';
 import 'category_first.dart';
 import 'fastfood.dart';
 import 'mypage.dart';
@@ -39,7 +40,14 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     MyInfoPage(),
     HomePage(),
+    SettingPage()
   ];
+
+  void refresh(int newIndex) {
+    setState(() {
+      _currentIndex = newIndex;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +71,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
         onTap: (index) {
           print("탭한 인덱스 $index");
+          refresh(index);
           setState(() {
             _currentIndex = index;
           });

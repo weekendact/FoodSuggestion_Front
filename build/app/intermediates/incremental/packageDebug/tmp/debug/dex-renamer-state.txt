@@ -1,4 +1,4 @@
-#Thu Nov 16 17:41:36 KST 2023
-base.0=C\:\\Object\\FoodSuggestion_Front\\FoodSuggestion_Front\\Object_Front\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Fri Nov 17 10:41:59 KST 2023
+base.0=/Users/joseonghyeon/Desktop/Object_Project/Object_back/Object_Front/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

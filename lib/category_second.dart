@@ -2,23 +2,27 @@
 import 'package:flutter/material.dart';
 
 class NextPage extends StatefulWidget {
-  final List<String> selectedCategories;
+  final List<String> categoryfirst;
 
-  NextPage(this.selectedCategories);
+  NextPage(this.categoryfirst);
 
   @override
-  _NextPageState createState() => _NextPageState(selectedCategories);
+  _NextPageState createState() => _NextPageState(categoryfirst);
 
 }
 
 class _NextPageState extends State<NextPage> {
-  List<String> selectedCategories;
+  List<String> categorysecond=[];
 
-  _NextPageState(this.selectedCategories);
+  // 이제 생성자를 위젯에서 가져오도록 수정
+  _NextPageState(List<String> categoryfirst) {
+    // categoryfirst를 categorysecond로 복사
+    categorysecond.addAll(categoryfirst);
+  }
 
   @override
   Widget build(BuildContext context) {
-    String categoryText = selectedCategories.join(',');
+    String categoryText = categorysecond.join(',');
     return Scaffold(
       appBar: AppBar(
         title: Text('$categoryText'),
@@ -28,39 +32,39 @@ class _NextPageState extends State<NextPage> {
           children: <Widget>[
             CheckboxListTile(
               title: Text('밥'),
-              value: selectedCategories.contains('밥'),
+              value: categorysecond.contains('밥'),
               onChanged: (newValue) {
                 setState(() {
                   if (newValue==true) {
-                    selectedCategories.add('밥');
+                    categorysecond.add('밥');
                   } else {
-                    selectedCategories.remove('밥');
+                    categorysecond.remove('밥');
                   }
                 });
               },
             ),
             CheckboxListTile(
               title: Text('면'),
-              value: selectedCategories.contains('면'),
+              value: categorysecond.contains('면'),
               onChanged: (newValue) {
                 setState(() {
                   if (newValue==true) {
-                    selectedCategories.add('면');
+                    categorysecond.add('면');
                   } else {
-                    selectedCategories.remove('면');
+                    categorysecond.remove('면');
                   }
                 });
               },
             ),
             CheckboxListTile(
               title: Text('빵'),
-              value: selectedCategories.contains('빵'),
+              value: categorysecond.contains('빵'),
               onChanged: (newValue) {
                 setState(() {
                   if (newValue == true) {
-                    selectedCategories.add('빵');
+                    categorysecond.add('빵');
                   } else {
-                    selectedCategories.remove('빵');
+                    categorysecond.remove('빵');
                   }
                 });
               },
@@ -68,26 +72,26 @@ class _NextPageState extends State<NextPage> {
 
             CheckboxListTile(
               title: Text('떡'),
-              value: selectedCategories.contains('떡'),
+              value: categorysecond.contains('떡'),
               onChanged: (newValue) {
                 setState(() {
                   if (newValue == true) {
-                    selectedCategories.add('떡');
+                    categorysecond.add('떡');
                   } else {
-                    selectedCategories.remove('떡');
+                    categorysecond.remove('떡');
                   }
                 });
               },
             ),
             CheckboxListTile(
               title: Text('고기'),
-              value: selectedCategories.contains('고기'),
+              value: categorysecond.contains('고기'),
               onChanged: (newValue) {
                 setState(() {
                   if (newValue == true) {
-                    selectedCategories.add('고기');
+                    categorysecond.add('고기');
                   } else {
-                    selectedCategories.remove('고기');
+                    categorysecond.remove('고기');
                   }
                 });
               },

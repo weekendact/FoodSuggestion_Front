@@ -38,9 +38,9 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
 
   final List<Widget> _pages = [
-    MyInfoPage(),
+    MyHomePage(),
     HomePage(),
-    SettingPage()
+    SettingPage(),
   ];
 
   void refresh(int newIndex) {
@@ -53,30 +53,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '내 페이지',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '설정',
-          ),
-        ],
-        onTap: (index) {
-          print("탭한 인덱스 $index");
-          refresh(index);
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
+      // Remove BottomNavigationBar
     );
   }
 }
@@ -117,24 +94,37 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(width: 1.0),
+                Expanded(
+                  child: SquareButton(
+                    buttonText: '디저트',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyCategorySelectionPage()),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
+
             LayerWidget(
               color: Colors.lightBlue,
               text: 'Layer 1 내용',
             ),
-            LayerWidget(
-              color: Colors.lightGreen,
-              text: 'Layer 2 내용',
-            ),
-            LayerWidget(
-              color: Colors.orange,
-              text: 'Layer 3 내용',
-            ),
-            LayerWidget(
-              color: Colors.purple,
-              text: 'Layer 4 내용',
-            ),
+            // LayerWidget(
+            //   color: Colors.lightGreen,
+            //   text: 'Layer 2 내용',
+            // ),
+            // LayerWidget(
+            //   color: Colors.orange,
+            //   text: 'Layer 3 내용',
+            // ),
+            // LayerWidget(
+            //   color: Colors.purple,
+            //   text: 'Layer 4 내용',
+            // ),
           ],
         ),
       ),
@@ -171,6 +161,7 @@ class SquareButton extends StatelessWidget {
         ),
       ),
     );
+
   }
 }
 

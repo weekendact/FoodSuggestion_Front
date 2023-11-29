@@ -1,31 +1,61 @@
-// category_second.dart
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import 'food_info.dart';
 
 class NextPage extends StatefulWidget {
+  final List<String> categorysecond;
   final List<String> categoryfirst;
 
-  NextPage(this.categoryfirst);
+  NextPage(this.categorysecond, this.categoryfirst);
 
   @override
-  _NextPageState createState() => _NextPageState(categoryfirst);
-
+  _NextPageState createState() =>
+      _NextPageState(categorysecond, categoryfirst);
 }
 
 class _NextPageState extends State<NextPage> {
-  List<String> categorysecond=[];
+  List<String> categorysecond = [];
+  List<String> categoryfirst = [];
 
-  // 이제 생성자를 위젯에서 가져오도록 수정
-  _NextPageState(List<String> categoryfirst) {
-    // categoryfirst를 categorysecond로 복사
-    categorysecond.addAll(categoryfirst);
+  _NextPageState(List<String> categorysecond, List<String> categoryfirst) {
+    this.categorysecond = categorysecond;
+    this.categoryfirst = categoryfirst;
+    // Add any initialization logic you need for categoryfirst
+  }
+
+  Future<String> sendDataToServer() async {
+    final url = Uri.parse('http://192.168.56.1:8080/api/processCategories');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "categoryfirst": categoryfirst,
+          "categorysecond": categorysecond,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        return result;
+      } else {
+        print('서버 오류: ${response.statusCode}');
+        return 'Error';
+      }
+    } catch (e) {
+      print('Exception: $e');
+      return 'Error';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String categoryText = categorysecond.join(',');
     return Scaffold(
       appBar: AppBar(
-        title: Text('$categoryText'),
+        title: Text('식사 카테고리'),
       ),
       body: Center(
         child: Column(
@@ -35,7 +65,7 @@ class _NextPageState extends State<NextPage> {
               value: categorysecond.contains('밥'),
               onChanged: (newValue) {
                 setState(() {
-                  if (newValue==true) {
+                  if (newValue == true) {
                     categorysecond.add('밥');
                   } else {
                     categorysecond.remove('밥');
@@ -48,7 +78,7 @@ class _NextPageState extends State<NextPage> {
               value: categorysecond.contains('면'),
               onChanged: (newValue) {
                 setState(() {
-                  if (newValue==true) {
+                  if (newValue == true) {
                     categorysecond.add('면');
                   } else {
                     categorysecond.remove('면');
@@ -56,20 +86,6 @@ class _NextPageState extends State<NextPage> {
                 });
               },
             ),
-            CheckboxListTile(
-              title: Text('빵'),
-              value: categorysecond.contains('빵'),
-              onChanged: (newValue) {
-                setState(() {
-                  if (newValue == true) {
-                    categorysecond.add('빵');
-                  } else {
-                    categorysecond.remove('빵');
-                  }
-                });
-              },
-            ),
-
             CheckboxListTile(
               title: Text('떡'),
               value: categorysecond.contains('떡'),
@@ -96,17 +112,37 @@ class _NextPageState extends State<NextPage> {
                 });
               },
             ),
-            Row( // "이전 페이지로" 버튼과 "다음 페이지로" 버튼을 가로로 나란하게 배치
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // 이전 페이지로 돌아가기
+                    Navigator.pop(context);
                   },
                   child: Text('이전 페이지로'),
                 ),
                 ElevatedButton(
-                  onPressed: (){},
+                  onPressed: () {
+                    sendDataToServer().then((result) {
+                      if (result ==
+                          'No match found between foodindetail and menu_name.') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("일치하는 항목이 없습니다.")),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FoodInfoPage(
+                              selectedCategories: categoryfirst,
+                              apiUrl: 'http://192.168.56.1:8080/api/processCategories',
+                              categorysecond: categorysecond,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+                  },
                   child: Text('다음 페이지로'),
                 ),
               ],
@@ -116,4 +152,4 @@ class _NextPageState extends State<NextPage> {
       ),
     );
   }
-} //dweq
+}

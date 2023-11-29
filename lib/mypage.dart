@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'home.dart';
 
 void main() {
   runApp(
@@ -26,55 +25,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    MyInfoPage(),
-    HomePage(),
-  ];
-
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My page',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-    );
+    return MyInfoPage();
   }
 }
-
-
 
 class MyInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserData userData = Provider.of<UserData>(context);
+    UserData userData = Provider.of<UserData>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("My Page"),
@@ -87,8 +48,9 @@ class MyInfoPage extends StatelessWidget {
             ListTile(
               title: Text("아이디\n\n${userData.name_user}"),
             ),
+            Divider(),
             ListTile(
-              title: Text("비밀번호  ${userData.maskedPassword}"),
+              title: Text("패스워드\n\n${userData.maskedPassword}"),
             ),
             Divider(),
             Row(
@@ -120,25 +82,13 @@ class MyInfoPage extends StatelessWidget {
   }
 }
 
-class AllergyItem extends StatelessWidget {
-  final String allergy;
-
-  AllergyItem({required this.allergy});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(allergy),
-    );
-  }
-}
 
 class PasswordChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("비밀번호 변경"),
+        title: Text("패스워드 변경"),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

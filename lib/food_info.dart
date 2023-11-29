@@ -1,97 +1,59 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FoodInfoPage(selectedCategories, url);
-    );
-  }
-}
+import 'package:http/http.dart' as http;
+import 'store.dart';
 
 class FoodInfoPage extends StatefulWidget {
   final List<String> selectedCategories;
-  final String url;
+  final String apiUrl;
+  final List<String> categorysecond;
 
-  FoodInfoPage(this.selectedCategories, this.url);
+  FoodInfoPage({
+    required this.selectedCategories,
+    required this.apiUrl,
+    required this.categorysecond,
+  });
 
   @override
   _FoodInfoPageState createState() => _FoodInfoPageState();
 }
 
 class _FoodInfoPageState extends State<FoodInfoPage> {
-  PageController pageController = PageController(initialPage: 1);
-  List<Map<String, dynamic>> imageAndText = [];
-  int currentPage = 1;
+  List<Store> storeList = [];
 
   @override
   void initState() {
     super.initState();
-    pageController.addListener(() {
-      if (pageController.page == 0) {
-        pageController.jumpToPage(imageAndText.length - 2);
-      } else if (pageController.page == imageAndText.length - 1) {
-        pageController.jumpToPage(1);
-      } else {
-        currentPage = pageController.page?.round() ?? 1;
-      }
-    });
-
-    imageAndText = [
-      {
-        "imagePath": "assets/images/치킨.jpeg",
-        "text": "치킨",
-        "width": 180.0,
-        "height": 180.0,
-      },
-      {
-        "imagePath": "assets/images/닭갈비.jpeg",
-        "text": "닭갈비\n- 탄수화물 : 23.1g\n- 단백질 : 45.5g\n- 지방 : 31.6g\n- 당류 : 8.5g\n- 나트륨 : 1016.94mg\n- 콜레스테롤 : 217.67mg\n- 포화지방산 : 11.3g\n- 트랜스지방 : 0.3g",
-        "width": 200.0,
-        "height": 200.0,
-      },
-      {
-        "imagePath": "assets/images/백숙.jpeg",
-        "text": "백숙",
-        "width": 150.0,
-        "height": 150.0,
-      },
-      {
-        "imagePath": "assets/images/치킨.jpeg",
-        "text": "치킨",
-        "width": 180.0,
-        "height": 180.0,
-      },
-      {
-        "imagePath": "assets/images/닭갈비.jpeg",
-        "text": "닭갈비\n- 탄수화물 : 23.1g\n- 단백질 : 45.5g\n- 지방 : 31.6g\n- 당류 : 8.5g\n- 나트륨 : 1016.94mg\n- 콜레스테롤 : 217.67mg\n- 포화지방산 : 11.3g\n- 트랜스지방 : 0.3g",
-        "width": 200.0,
-        "height": 200.0,
-      },
-    ];
+    fetchData();
   }
 
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
-
-  void goToFirstImage() {
-    pageController.jumpToPage(1);
-  }
-
-  void goToPreviousImage() {
-    if (currentPage > 1) {
-      pageController.previousPage(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.ease,
+  Future<void> fetchData() async {
+    try {
+      final response = await http.post(
+        Uri.parse(widget.apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'categoryfirst': widget.selectedCategories,
+          'categorysecond': widget.categorysecond,
+        }),
       );
+
+      print('Request: ${response.request}');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        setState(() {
+          storeList = jsonData.map((data) => Store.fromJson(data)).toList();
+        });
+      } else {
+        // 에러 처리
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // 예외 처리
+      print('Exception: $e');
     }
   }
 
@@ -99,62 +61,82 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("음식 정보"),
+        title: Text('음식 정보'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: pageController,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      imageAndText[index]["imagePath"],
-                      width: imageAndText[index]["width"],
-                      height: imageAndText[index]["height"],
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      imageAndText[index]["text"],
-                      style: TextStyle(
-                        fontSize: 20,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('선택된 카테고리: ${widget.selectedCategories}'),
+            SizedBox(height: 20),
+            Text('응답 데이터:'),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: storeList.length,
+                itemBuilder: (context, index) {
+                  final Store store = storeList[index];
+
+                  return Card(
+                    margin: EdgeInsets.all(16),
+                    child: InkWell(
+                      onTap: () async {
+                        // 눌린 아이템의 이름 가져오기
+                        String itemName = store.name;
+
+                        // 선택한 카테고리와 데이터를 포함하여 다음 페이지로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MyHomePage(
+                                  storeList: [store],
+                                  selectedCategories: [itemName],
+                                ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Name: ${store.name}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Distance: ${store.distance}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          if (store.phoneNumber != null)
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Phone Number: ${store.phoneNumber}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ],
-                );
-              },
-              itemCount: imageAndText.length,
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(height: 16),
-          if (currentPage == imageAndText.length - 2)
-            LastPageButton(goToPreviousImage),
-          if (currentPage == imageAndText.length - 1)
-            LastPageButton(goToFirstImage),
-        ],
-      ),
-    );
-  }
-}
-
-class LastPageButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  LastPageButton(this.onPressed);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: onPressed,
-          child: Text("처음 사진 화면으로 돌아가기"),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

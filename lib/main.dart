@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:object_food_suggestion_project/Sign_Up_Page.dart';
-import 'pages.dart';
+import 'package:object_food_suggestion_project/signuppage.dart';
+import 'package:object_food_suggestion_project/category_first.dart';
+import 'package:object_food_suggestion_project/fastfood.dart';
+import 'package:object_food_suggestion_project/mypage.dart';
+import 'package:object_food_suggestion_project/setting.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -45,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: '비밀번호',
+                labelText: '패스워드',
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
               ),
               obscureText: true,
@@ -110,7 +113,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 1;
 
   final List<Widget> _pages = [
-    MyInfoPage(),
+    MyHomePage(),
     HomePage(),
     SettingPage(),
   ];
@@ -185,24 +188,36 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(width: 1.0),
+                Expanded(
+                  child: SquareButton(
+                    buttonText: '디저트',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyCategorySelectionPage()),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
             LayerWidget(
               color: Colors.lightBlue,
               text: 'Layer 1 내용',
             ),
-            LayerWidget(
-              color: Colors.lightGreen,
-              text: 'Layer 2 내용',
-            ),
-            LayerWidget(
-              color: Colors.orange,
-              text: 'Layer 3 내용',
-            ),
-            LayerWidget(
-              color: Colors.purple,
-              text: 'Layer 4 내용',
-            ),
+            // LayerWidget(
+            //   color: Colors.lightGreen,
+            //   text: 'Layer 2 내용',
+            // ),
+            // LayerWidget(
+            //   color: Colors.orange,
+            //   text: 'Layer 3 내용',
+            // ),
+            // LayerWidget(
+            //   color: Colors.purple,
+            //   text: 'Layer 4 내용',
+            // ),
           ],
         ),
       ),
@@ -259,5 +274,3 @@ class LayerWidget extends StatelessWidget {
     );
   }
 }
-
-// 추가적인 코드들...

@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'category_second.dart';
 
+import 'package:flutter/material.dart';
+import 'category_second.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -22,15 +25,15 @@ class _CategorySelectionPageState extends State<CategorySelectionPage> {
   List<String> categoryfirst = [];
 
   void nextPage() {
-    if (categoryfirst.isEmpty){
+    if (categoryfirst.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("적어도 한 가지 카테고리를 선택해야 합니다.")),
       );
-    } else{
+    } else {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NextPage(categoryfirst),
+          builder: (context) => NextPage(categoryfirst, categoryfirst),
         ),
       );
     }

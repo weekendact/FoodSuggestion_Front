@@ -39,7 +39,7 @@ class SettingList extends State<SettingPage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text("환경 설정"),
+        title: Text("Setting"),
       ),
       body: Column(
         children: [
